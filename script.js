@@ -4,66 +4,6 @@ var http = require("http");
 var fs = require("fs");
 const { resolve } = require("path");
 const { stringify } = require("querystring");
-/* http
-  .createServer(function (req, res) {
-      fs.readFile("title-2.html", function (err, data) {
-        //  console.log(this);
-      res.writeHead(200, { "Content-Type": "text/html" });
-        res.write(data);
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(data, "text/html");
-        console.log(doc);
-      return res.end();
-    });
-  })
-  .listen(8080);
-console.log("hello");   
-
-fs.appendFile("mynewfile1.txt", "Hello content!", function (err) {
-  if (err) throw err;
-  console.log("Saved!");
-});
-//console.log(testing)
-// calling for URL
-
-
-/*
-async function asyncCall() {
-  console.log("calling");
-  const result = await new Promise((resolve, reject) => {
-    request(
-      {
-        uri: "https://www.ecfr.gov/api/renderer/v1/content/enhanced/2024-03-01/title-2",
-      },
-      function (error, response, body) {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(body);
-        }
-      }
-    );
-  });
-  //console.log(result);
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(result, "text/html");
-  const title = doc.getElementById("subtitle-A");
-  doc.documentElement.setAttribute('class="title"', title);
-
-  console.info(doc.documentElement.getAttribute('class="title"'));
-  //console.log(doc);
-  // Now you can work with the parsed HTML document
-  // For example, to get the title of the HTML document:
-  //    console.info(doc["documentElement"].textContent);
-  // const title = doc.getElementById("subtitle-A");
-  //   console.log("Title:", title);
-}
-
-// calling function
-asyncCall().catch((error) => {
-  console.error("Error:", error);
-});
-*/
 
 
 const samplefile = fs.readFileSync("title-2.html", "utf8");
