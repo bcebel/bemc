@@ -1,7 +1,6 @@
 const fs = require("fs");
 const { DOMParser } = require("xmldom");
 
-
 function parseHtml(filePath) {
   const sampleFile = fs.readFileSync(filePath, "utf8");
   const parser = new DOMParser();
@@ -17,7 +16,7 @@ function parseHtml(filePath) {
     "chapter",
     "editorial-note",
   ];
-  const tagsToInclude = ["h1", "h2", "h3", "p", "a"];
+  const tagsToInclude = ["h1", "h2", "h3", "p", "a", "table"];
 
   const data = {};
   classes.forEach((className) => {
