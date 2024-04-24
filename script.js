@@ -1,61 +1,40 @@
-var request = require("request");
-var { DOMParser } = require("xmldom");
-var http = require("http");
-var fs = require("fs");
-const { resolve } = require("path");
-const { stringify } = require("querystring");
+const fs = require("fs");
+const { DOMParser } = require("xmldom");
 
 
-const samplefile = fs.readFileSync("title-2.html", "utf8");
-const parser = new DOMParser();
-const doc = parser.parseFromString(samplefile, "text/html");
-//console.log(doc.childNodes[1]);
-let title = doc.getElementsByClassName("title");
-for (var i = 0; i < title.length; i++) {
-   // console.log(title[i].textContent);
-}
-//console.log(title);
-const subtitle = doc.getElementsByClassName("subtitle");
-for (var i = 0; i < subtitle.length; i++) {
-//  console.log(subtitle[i].textContent);
-}
+function parseHtml(filePath) {
+  const sampleFile = fs.readFileSync(filePath, "utf8");
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(sampleFile, "text/html");
+  const classes = [
+    "title",
+    "subtitle",
+    "part",
+    "authority",
+    "subpart",
+    "section",
+    "table-wrapper",
+    "chapter",
+    "editorial-note",
+  ];
+  const tagsToInclude = ["h1", "h2", "h3", "p", "a"];
 
-const part = doc.getElementsByClassName("part");
-for (var i = 0; i < part.length; i++) {
-//  console.log(part[i].textContent);
-}  
+  const data = {};
+  classes.forEach((className) => {
+    const elements = doc.getElementsByClassName(className);
+    data[className] = Array.from(elements).map((element) => {
+      // Extract text content for specified tags within each element
+      return tagsToInclude.map((tag) => ({
+        tagName: tag,
+        textContent: Array.from(element.getElementsByTagName(tag)).map(
+          (tagElement) => tagElement.textContent
+        ),
+      }));
+    });
+  });
 
-const authority = doc.getElementsByClassName("authority");
-for (var i = 0; i < authority.length; i++) {
- // console.log(authority[i].textContent);
-}
-
-const source = doc.getElementsByClassName("source")
-for (var i = 0; i < source.length; i++) {
-  //  console.log(source[i].textContent);
-} 
-
-const subpart = doc.getElementsByClassName("subpart");
-for (var i = 0; i < subpart.length; i++) {
-//  console.log(subpart[i].textContent);
+  return data;
 }
 
-const section = doc.getElementsByClassName("section");
-for (var i = 0; i < section.length; i++) {
-//  console.log(section[i].textContent);
-}
-
-const tableWrapper = doc.getElementsByClassName("table-wrapper");
-for (var i = 0; i < tableWrapper.length; i++) {
- // console.log(tableWrapper[i].textContent);
-}
-  
-const chapter = doc.getElementsByClassName("chapter");
-for (var i = 0; i < chapter.length; i++) {
-//  console.log(chapter[i].textContent);
-}
-
-const editorialNote = doc.getElementsByClassName("editorial-note");
-for (var i = 0; i < editorialNote.length; i++) {
-  console.log(editorialNote[i].textContent);
-}
+const jsonOutput = parseHtml("title-2.html");
+console.log(JSON.stringify(jsonOutput, null, 2));
