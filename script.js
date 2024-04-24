@@ -15,6 +15,11 @@ function parseHtml(filePath) {
     "table-wrapper",
     "chapter",
     "editorial-note",
+    "inline-paragraph",
+    "indent-1",
+    "indent-2",
+    "indent-3",
+    "citation",
   ];
   const tagsToInclude = ["h1", "h2", "h3", "p", "a", "table"];
 
@@ -23,12 +28,18 @@ function parseHtml(filePath) {
     const elements = doc.getElementsByClassName(className);
     data[className] = Array.from(elements).map((element) => {
       // Extract text content for specified tags within each element
-      return tagsToInclude.map((tag) => ({
-        tagName: tag,
-        textContent: Array.from(element.getElementsByTagName(tag)).map(
-          (tagElement) => tagElement.textContent
-        ),
-      }));
+      return tagsToInclude
+        .map((tag) => {
+          const tagElements = Array.from(element.getElementsByTagName(tag));
+          const filteredTextContent = tagElements
+            .map((tagElement) => tagElement.textContent.trim())
+            .filter((text) => text !== ""); // Exclude empty text content
+          return {
+            tagName: tag,
+            textContent: filteredTextContent,
+          };
+        })
+        .filter((tagData) => tagData.textContent.length > 0); // Exclude entries with empty textContent
     });
   });
 
